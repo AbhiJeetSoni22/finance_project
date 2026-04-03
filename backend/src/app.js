@@ -4,7 +4,7 @@ const { errorHandler } = require("./utils/errorHandler");
 const app = express();
 
 // ── Body Parsing ────────────────────────────────────────────────────────────
-app.json();          // Parse incoming JSON request bodies
+app.use(express.json());                          // Parse incoming JSON request bodies
 app.use(express.urlencoded({ extended: false })); // Parse URL-encoded form data
 
 // ── Health Check ─────────────────────────────────────────────────────────────
@@ -14,9 +14,9 @@ app.get("/", (req, res) => {
 
 // ── API Routes ────────────────────────────────────────────────────────────────
 // Routes will be imported and mounted here as we build each module:
-// app.use("/api/auth",         require("./routes/auth.routes"));
-// app.use("/api/users",        require("./routes/user.routes"));
-// app.use("/api/transactions", require("./routes/transaction.routes"));
+app.use("/api/auth",          require("./routes/auth.routes"));
+app.use("/api/users",        require("./routes/user.routes"));
+app.use("/api/transactions", require("./routes/transaction.routes"));
 // app.use("/api/dashboard",    require("./routes/dashboard.routes"));
 
 // ── 404 Handler ───────────────────────────────────────────────────────────────
