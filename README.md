@@ -41,12 +41,16 @@ Built with **Node.js**, **Express**, **MongoDB**, and **JWT authentication**.
 ## Project Structure
 
 ```
-finance-backend/
+finance_project/
+├── package.json
+├── README.md
+├── render.yaml                      # Deployment configuration
 ├── server.js                        # Entry point — loads env, connects DB, starts server
 ├── src/
 │   ├── app.js                       # Express app setup, middleware, route mounting
 │   ├── config/
-│   │   └── db.js                    # MongoDB connection
+│   │   ├── db.js                    # MongoDB connection
+│   │   └── swagger.js               # Swagger API documentation setup
 │   ├── models/
 │   │   ├── user.model.js            # User schema (name, email, role, isActive)
 │   │   └── transaction.model.js     # Transaction schema with soft delete + indexes
@@ -71,6 +75,13 @@ finance-backend/
 │       ├── errorHandler.js          # AppError class + global error middleware
 │       ├── responseFormatter.js     # Consistent sendSuccess() response shape
 │       └── jwt.js                   # generateToken and verifyToken helpers
+└── test/
+    ├── auth.test.js
+    ├── dashboard.test.js
+    ├── helpers.js
+    ├── setup.js
+    ├── transaction.test.js
+    └── user.test.js
 ```
 
 ---
