@@ -7,7 +7,7 @@ const {
   deleteTransaction,
 } = require("../controllers/transaction.controller");
 
-const { protect, authorizeRoles } = require("../middlewares/auth.middleware");
+const { protect, authorizeRoles } = require("../middleware/auth.middleware");
 const {
   createTransactionValidation,
   updateTransactionValidation,
