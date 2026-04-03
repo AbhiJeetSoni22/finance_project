@@ -98,7 +98,7 @@ finance_project/
 ```bash
 # 1. Clone the repository
 git clone <your-repo-url>
-cd finance-backend
+cd finance_project
 
 # 2. Install dependencies
 npm install
