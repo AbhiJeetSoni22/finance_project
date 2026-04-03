@@ -1,20 +1,42 @@
 const express = require("express");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger");
 const { errorHandler } = require("./utils/errorHandler");
 
 const app = express();
 
-// ── Body Parsing ────────────────────────────────────────────────────────────
-app.use(express.json());                          // Parse incoming JSON request bodies
-app.use(express.urlencoded({ extended: false })); // Parse URL-encoded form data
+// ── Body Parsing ──────────────────────────────────────────────────────────────
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-// ── Health Check ─────────────────────────────────────────────────────────────
+// ── Swagger API Docs ──────────────────────────────────────────────────────────
+// Available at /api-docs — interactive UI to explore and test all endpoints
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customSiteTitle: "Finance Dashboard API Docs",
+  customCss: ".swagger-ui .topbar { background-color: #1a1a2e; }",
+  swaggerOptions: {
+    persistAuthorization: true, // Keeps the Bearer token across page refreshes
+  },
+}));
+
+// ── Raw Swagger JSON ──────────────────────────────────────────────────────────
+// Useful if reviewers want to import into Postman or Insomnia
+app.get("/api-docs.json", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.send(swaggerSpec);
+});
+
+// ── Health Check ──────────────────────────────────────────────────────────────
 app.get("/", (req, res) => {
-  res.json({ success: true, message: "Finance Dashboard API is running" });
+  res.json({
+    success: true,
+    message: "Finance Dashboard API is running",
+    docs: "/api-docs",
+  });
 });
 
 // ── API Routes ────────────────────────────────────────────────────────────────
-// Routes will be imported and mounted here as we build each module:
-app.use("/api/auth",          require("./routes/auth.routes"));
+app.use("/api/auth",         require("./routes/auth.routes"));
 app.use("/api/users",        require("./routes/user.routes"));
 app.use("/api/transactions", require("./routes/transaction.routes"));
 app.use("/api/dashboard",    require("./routes/dashboard.routes"));
@@ -25,7 +47,6 @@ app.use((req, res) => {
 });
 
 // ── Global Error Handler ──────────────────────────────────────────────────────
-// Must be registered LAST, after all routes
 app.use(errorHandler);
 
 module.exports = app;

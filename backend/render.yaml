@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: finance-dashboard-api
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false       # You will set this manually in Render dashboard
+      - key: JWT_SECRET
+        sync: false       # You will set this manually in Render dashboard
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: API_URL
+        sync: false       # Set this to your Render URL after first deploy
